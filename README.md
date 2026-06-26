@@ -39,4 +39,4 @@ All commands accept `-v`/`--verbose` for detailed output.
 
 ## License
 
-MIT
+No

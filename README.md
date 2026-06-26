@@ -7,7 +7,7 @@ A simple CLI tool to manage CPU cores on Linux.
 ### From source
 
 ```bash
-go install github.com/Hxmbl/coremanager@latest
+go install github.com/hxmbl/coremanager@latest
 ```
 
 ### From release

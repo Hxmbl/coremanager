@@ -27,3 +27,24 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add cman symlink to archives
+        run: |
+          for archive in dist/*.tar.gz; do
+            dir=$(mktemp -d)
+            tar -xzf "$archive" -C "$dir"
+            # The archive contains a single top-level directory
+            inner=$(find "$dir" -mindepth 1 -maxdepth 1 -type d | head -1)
+            if [ -n "$inner" ] && [ -f "$inner/coremanager" ]; then
+              ln -sf coremanager "$inner/cman"
+              tar -C "$dir" -czf "$archive" "$(basename "$inner")"
+            fi
+            rm -rf "$dir"
+          done
+
+      - name: Re-upload modified archives
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tar.gz
+
+

@@ -11,6 +11,19 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	colorRed    = "\033[31m"
+	colorGreen  = "\033[32m"
+	colorYellow = "\033[33m"
+	colorBlue   = "\033[34m"
+	colorReset  = "\033[0m"
+)
+
+func green(s string) string  { return colorGreen + s + colorReset }
+func red(s string) string    { return colorRed + s + colorReset }
+func yellow(s string) string { return colorYellow + s + colorReset }
+func blue(s string) string   { return colorBlue + s + colorReset }
+
 var verbose bool
 
 func main() {
@@ -72,6 +85,7 @@ func main() {
 	rootCmd.AddCommand(disableCmd, enableCmd, coreCountCmd, cpuModelCmd, debugCmd)
 
 	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, red(fmt.Sprintf("Error: %v", err)))
 		os.Exit(1)
 	}
 }
@@ -79,12 +93,12 @@ func main() {
 func runDisableCores(arg string) error {
 	if strings.ToLower(arg) == "all" || strings.ToLower(arg) == "a" {
 		if verbose {
-			fmt.Println("Disabling all secondary cores...")
+			fmt.Println(yellow("Disabling all secondary cores..."))
 		}
 		if err := logic.DisableAll(verbose); err != nil {
 			return err
 		}
-		fmt.Println("All secondary cores disabled.")
+		fmt.Println(green("All secondary cores disabled."))
 		return nil
 	}
 
@@ -99,19 +113,19 @@ func runDisableCores(arg string) error {
 	if err := logic.Disable(target, verbose); err != nil {
 		return err
 	}
-	fmt.Printf("Disabled %d core(s).\n", target)
+	fmt.Println(green(fmt.Sprintf("Disabled %d core(s).", target)))
 	return nil
 }
 
 func runEnableCores(arg string) error {
 	if strings.ToLower(arg) == "all" || strings.ToLower(arg) == "a" {
 		if verbose {
-			fmt.Println("Enabling all secondary cores...")
+			fmt.Println(yellow("Enabling all secondary cores..."))
 		}
 		if err := logic.EnableAll(verbose); err != nil {
 			return err
 		}
-		fmt.Println("All secondary cores enabled.")
+		fmt.Println(green("All secondary cores enabled."))
 		return nil
 	}
 
@@ -126,7 +140,7 @@ func runEnableCores(arg string) error {
 	if err := logic.Enable(target, verbose); err != nil {
 		return err
 	}
-	fmt.Printf("Enabled %d core(s).\n", target)
+	fmt.Println(green(fmt.Sprintf("Enabled %d core(s).", target)))
 	return nil
 }
 
@@ -135,8 +149,8 @@ func runCoreCount() error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Total CPU cores: %d\n", info.TotalCores)
-	fmt.Printf("Active CPU cores: %d\n", info.ActiveCores)
+	fmt.Println(blue(fmt.Sprintf("Total CPU cores: %d", info.TotalCores)))
+	fmt.Println(blue(fmt.Sprintf("Active CPU cores: %d", info.ActiveCores)))
 	return nil
 }
 
@@ -145,7 +159,7 @@ func runCPUModel() error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("CPU Model: %s\n", model)
+	fmt.Println(blue(fmt.Sprintf("CPU Model: %s", model)))
 	return nil
 }
 
@@ -155,16 +169,16 @@ func runDebugInfo() error {
 		return err
 	}
 
-	fmt.Printf("CPU Model: %s\n", info.Model)
-	fmt.Printf("Total CPU cores: %d\n", info.TotalCores)
-	fmt.Printf("Active CPU cores: %d\n", info.ActiveCores)
-	fmt.Printf("Core states (0=offline, 1=online): %v\n", info.CoreStates)
+	fmt.Println(blue(fmt.Sprintf("CPU Model: %s", info.Model)))
+	fmt.Println(blue(fmt.Sprintf("Total CPU cores: %d", info.TotalCores)))
+	fmt.Println(blue(fmt.Sprintf("Active CPU cores: %d", info.ActiveCores)))
+	fmt.Println(blue(fmt.Sprintf("Core states (0=offline, 1=online): %v", info.CoreStates)))
 
 	fmt.Print("Type 'a' for a lot of info. Press Enter to continue... ")
 	var input string
 	fmt.Scanln(&input)
 	if strings.ToLower(input) == "a" {
-		fmt.Println("Detailed info:")
+		fmt.Println(blue("Detailed info:"))
 		raw, err := logic.AllCPU()
 		if err != nil {
 			return err

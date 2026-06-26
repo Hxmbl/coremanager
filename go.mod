@@ -1,4 +1,4 @@
-module coremanager
+module github.com/hxmbl/coremanager
 
 go 1.26.3
 

@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"coremanager/logic"
+	"github.com/hxmbl/coremanager/logic"
 
 	"github.com/spf13/cobra"
 )

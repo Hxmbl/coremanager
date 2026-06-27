@@ -1,7 +1,7 @@
 .PHONY: build install uninstall clean
 
 BINARY  := coremanager
-ALIAS   := cman
+ALIAS   := cm
 PREFIX  ?= /usr/local
 BINDIR  := $(PREFIX)/bin
 

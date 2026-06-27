@@ -14,26 +14,42 @@ go install github.com/hxmbl/coremanager@latest
 
 Download the latest binary from [Releases](https://github.com/Hxmbl/coremanager/releases).
 
-## Usage
+## Usage Examples
+
+### Help
 
 ```bash
-coremanager --help
-coremanager core-count
-coremanager cpu-model
-coremanager disable-cores 3
-coremanager enable-cores all
-coremanager debug-info
+coremanager --help            # Shows you the help
 ```
 
-## Commands
+### Turn on or off core
 
-| Command | Alias | Description |
-|---------|-------|-------------|
-| `disable-cores [N\|all]` | `dc` | Disable N CPU cores or all secondary cores |
-| `enable-cores [N\|all]` | `ec` | Enable N CPU cores or all secondary cores |
-| `core-count` | `cc` | Display total and active core counts |
-| `cpu-model` | `cm` | Display CPU model name |
-| `debug-info` | `debug` | Show detailed CPU info |
+```bash
+coremanager dc 2  # Disables 2 cores
+coremanager ec 2  # Enables 2 cores
+coremanager dc a  # Disable all cores (but the one that can't be)
+coremanager ec a  # Enable all cores
+```
+
+ `dc` for disabling
+
+`ec` for enabling
+
+
+
+The core on and off doesn't turn off an exact core, just a number of them.
+
+### Everything Else
+
+P.S. Alias for coremanager is cm
+
+```bash
+cm cc             # Show the Core Count of active and total
+cm cm             # Show the cpu model
+cm debug          # Shows debug info (if that's useful to you...)
+```
+
+
 
 All commands accept `-v`/`--verbose` for detailed output.
 

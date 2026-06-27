@@ -31,11 +31,14 @@ func main() {
 		Use:   "coremanager",
 		Short: "A simple CLI tool to manage CPU cores on Linux",
 		Long:  "CoreManager - Manage CPU cores dynamically to save battery or reduce heat.",
+		Run: func(cmd *cobra.Command, args []string) {
+			cmd.Help()
+		},
 	}
 
 	disableCmd := &cobra.Command{
-		Use:     "disable-cores [N|all]",
-		Aliases: []string{"dc"},
+		Use:     "dc [N|all]",
+		Aliases: []string{"disable-cores"},
 		Short:   "Disable a number of CPU cores",
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -45,8 +48,8 @@ func main() {
 	disableCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose output")
 
 	enableCmd := &cobra.Command{
-		Use:     "enable-cores [N|all]",
-		Aliases: []string{"ec"},
+		Use:     "ec [N|all]",
+		Aliases: []string{"enable-cores"},
 		Short:   "Enable a number of CPU cores",
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -56,8 +59,8 @@ func main() {
 	enableCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose output")
 
 	coreCountCmd := &cobra.Command{
-		Use:     "core-count",
-		Aliases: []string{"cc"},
+		Use:     "cc",
+		Aliases: []string{"core-count"},
 		Short:   "Display the total and active CPU core counts",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runCoreCount()
@@ -65,8 +68,8 @@ func main() {
 	}
 
 	cpuModelCmd := &cobra.Command{
-		Use:     "cpu-model",
-		Aliases: []string{"cm"},
+		Use:     "cm",
+		Aliases: []string{"cpu-model"},
 		Short:   "Display the CPU model name",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runCPUModel()
@@ -74,8 +77,8 @@ func main() {
 	}
 
 	debugCmd := &cobra.Command{
-		Use:     "debug-info",
-		Aliases: []string{"debug"},
+		Use:     "debug",
+		Aliases: []string{"debug-info"},
 		Short:   "Display detailed CPU information for debugging",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runDebugInfo()
